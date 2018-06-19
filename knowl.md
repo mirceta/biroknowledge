@@ -1,5 +1,9 @@
 ## EntityFramework
 
+#### Use EntityFramework with some tables
+
+https://docs.microsoft.com/en-us/ef/core/get-started/aspnetcore/existing-db
+
 #### To enable Birokrat to use EntityFramework for arbitrary table:
 	
 ```alter table PostnaKnjiga add primary key RecNo```
