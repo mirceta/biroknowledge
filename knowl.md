@@ -4,6 +4,10 @@
 
 https://docs.microsoft.com/en-us/ef/core/get-started/aspnetcore/existing-db
 
+```
+Scaffold-DbContext "Server=192.168.0.123;Database=biroside;Trusted_Connection=false;User=turizem;Password=q" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models2
+```
+
 #### To enable Birokrat to use EntityFramework for arbitrary table:
 	
 ```alter table PostnaKnjiga add primary key RecNo```
