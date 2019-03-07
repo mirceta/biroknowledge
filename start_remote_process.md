@@ -9,7 +9,11 @@ winrm quickconfig
 
 ### ON CLIENT PC
 
- $s = New-PSSession -ComputerName 192.168.0.166 -Credential Kiki
+$pw = convertto-securestring -AsPlainText -Force -String yourpassword
+
+$cred = new-object -typename System.Management.Automation.PSCredential -argumentlist "Kiki",$pw
+
+$s = New-PSSession -ComputerName 192.168.0.166 -Credential $cred
 
 Invoke-Command -Session $s -ScriptBlock {Get-Culture}
 
