@@ -1,4 +1,4 @@
-### ON REMOTE PC
+### ON SLAVE PC
 Enable-PSRemoting -Force winrm quickconfig
 
 winrm create winrm/config/Listener?Address=*+Transport=HTTP
@@ -7,7 +7,7 @@ winrm quickconfig
 >> winrm set winrm/config/client '@{TrustedHosts="192.168.0.177"}'
 
 
-### ON CLIENT PC
+### ON MASTER PC
 
 $pw = convertto-securestring -AsPlainText -Force -String yourpassword
 
