@@ -54,3 +54,60 @@ https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/workflows/new-databa
 context.Database.EnsureCreated() // autocreates the database
 
 In production, better use migrations!!
+
+
+## Starting .NET Core console application without HostedServices, and using DI
+
+void CorrectWayToRunCoreAppWithoutHostedServices() {
+    var serviceProvider = new ServiceCollection()
+            .AddLogging(opt => {
+                opt.ClearProviders();
+                opt.AddConsole();
+                opt.SetMinimumLevel(LogLevel.Debug);
+            })
+            .AddSingleton<IServerAddress>(
+                new ServerAddress("http://www.birokrat.si/media/resource-monitoring/server-address.txt"))
+            .AddSingleton<IRemoteResources, RemoteResources>()
+            .AddSingleton<IMetricRecordCache, MetricRecordCache>()
+            .AddSingleton<IResourceMeasurementClient, ResourceMeasurementClient>()
+            .BuildServiceProvider();
+
+    var logger = serviceProvider.GetService<ILoggerFactory>()
+        .CreateLogger<Program>();
+    logger.LogInformation("Starting application");
+
+    var client = serviceProvider.GetService<IResourceMeasurementClient>();
+    while (true)
+    {
+        client.Work();
+    }
+}
+
+### And with HostedServices...
+
+// using NuGet download Microsoft.Extensions.Hosting
+static void Main(string[] args)
+{
+    new HostBuilder()
+        .ConfigureServices((hostContext, services) => {
+            services.AddLogging(opt =>
+            {
+                opt.ClearProviders();
+                opt.AddConsole();
+                opt.SetMinimumLevel(LogLevel.Debug);
+            })
+            .AddSingleton<IServerAddress>(
+                new ServerAddress("http://www.birokrat.si/media/resource-monitoring/server-address.txt"))
+            .AddSingleton<IRemoteResources, RemoteResources>()
+            .AddSingleton<IMetricRecordCache, MetricRecordCache>()
+
+
+            .AddHostedService<ComputationEnqueuerService>()
+            .AddSingleton<IComputationQueue, ComputationQueue>()
+            .AddHostedService<ComputationDequeuerService>()
+
+            .AddSingleton<IResourceMeasurementClient, ResourceMeasurementClient>();
+        })
+        .RunConsoleAsync();
+}
+
