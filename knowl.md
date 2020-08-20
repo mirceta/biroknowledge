@@ -45,6 +45,13 @@ END;
 GO
 ```
 
+### CREATE NEW USER WITH INTEGRATED SECURITY
+
+- Let **A** be the PC from which you want to connect, and **B** the PC you're connecting to. Let **u** be the user on **A** with which we want to connect to **B**.
+- On **B** create a windows user with the same username AND password as **u**.
+- On **B** create a SQL user with Integrated security and choose **u(B)** as the user, give sysadmin permissions.
+- On **A**, if a password change has been required in the case that the password didn't comply to standards on **B**, you should sign out and sign into the user on **A**
+
 ## EntityFramework object model to SQL Server
 https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/workflows/new-database
 
