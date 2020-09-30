@@ -118,3 +118,25 @@ static void Main(string[] args)
         .RunConsoleAsync();
 }
 
+## Publish a nuget package to nuget.org
+
+References: https://docs.microsoft.com/en-us/nuget/create-packages/creating-a-package
+
+
+### Works only if you package has no dependencies.
+- Install nuget.exe from https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+- Go to visual studio project folder in powershell and
+- ```nuget spec``` will generate the .nuspec file used as manifest for the nuget package
+- ```nuget pack```
+
+
+#### Test the package
+
+- Move the .nupkg to local folder
+- Add the folder as nuget repository with ```nuget sources add -name <name> -source <path>```
+- Install pacakge with ```nuget install <packageID> -source <name>```
+
+#### Publish the package to nuget.org
+
+- Login to nuget.org
+- Upload the .nupkg file and wait 1 hour
